@@ -6,6 +6,26 @@
 
 ---
 
+## 🚦 Project Status
+
+| Module | Status |
+|---|---|
+| **Landing Page** | ✅ Built |
+| **Auth (Login / Signup)** | ✅ Built (Supabase email + OAuth-ready) |
+| **Auth Callback & Middleware** | ✅ Built |
+| **User Dashboard** | ✅ Built (shell — stats hardcoded, module links present) |
+| **FastAPI Backend** | ✅ Running (auth + users routes wired) |
+| **DSA Hub** | 🚧 Scaffold only |
+| **In-Browser IDE** | 🚧 Scaffold only |
+| **AI Code Critic** | 🚧 Scaffold only |
+| **DBMS Module** | 🚧 Scaffold only |
+| **ER Diagram Builder** | 🚧 Scaffold only |
+| **SQL Sandbox** | 🚧 Scaffold only |
+| **Profile Page** | 🚧 Scaffold only |
+| **Database Migrations** | 🚧 Not yet applied |
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -13,133 +33,58 @@ cerebyte/
 │
 ├── 📄 README.md
 ├── 📄 .gitignore
+├── 📄 .env                              # Root-level env vars (backend)
 ├── 📄 .env.example
 ├── 📄 docker-compose.yml
 │
-├── 📁 frontend/                          # Next.js (React) Application
+├── 📁 frontend/                         # Next.js 15 (App Router) Application
 │   ├── 📄 package.json
 │   ├── 📄 next.config.js
 │   ├── 📄 tailwind.config.js
 │   ├── 📄 tsconfig.json
+│   ├── 📄 .env.local                    # ← copy from .env.local.example
 │   ├── 📄 .env.local.example
 │   │
-│   ├── 📁 public/
-│   │   ├── 📁 assets/
-│   │   │   ├── 📁 icons/
-│   │   │   └── 📁 images/
-│   │   └── 📁 fonts/
-│   │
 │   └── 📁 src/
-│       ├── 📁 app/                       # Next.js App Router
-│       │   ├── 📄 layout.tsx
-│       │   ├── 📄 page.tsx               # Landing Page
+│       ├── 📄 middleware.ts              # ✅ Auth redirect guard
+│       │
+│       ├── 📁 app/                      # Next.js App Router
+│       │   ├── 📄 layout.tsx            # ✅ Root layout + fonts
+│       │   ├── 📄 page.tsx              # ✅ Landing Page
+│       │   ├── 📄 globals.css
 │       │   │
-│       │   ├── 📁 (auth)/
+│       │   ├── 📁 (auth)/               # ✅ Auth route group
 │       │   │   ├── 📁 login/
-│       │   │   │   └── 📄 page.tsx
+│       │   │   │   └── 📄 page.tsx      # ✅ Login page
 │       │   │   ├── 📁 signup/
-│       │   │   │   └── 📄 page.tsx
+│       │   │   │   └── 📄 page.tsx      # ✅ Signup page
 │       │   │   └── 📁 callback/
 │       │   │       └── 📄 page.tsx
 │       │   │
+│       │   ├── 📁 auth/
+│       │   │   └── 📁 callback/
+│       │   │       └── 📄 route.ts      # ✅ OAuth code exchange → /dashboard
+│       │   │
 │       │   ├── 📁 dashboard/
-│       │   │   └── 📄 page.tsx           # User Dashboard & Analytics
+│       │   │   └── 📄 page.tsx          # ✅ User dashboard (auth-protected)
 │       │   │
-│       │   ├── 📁 dsa/
-│       │   │   ├── 📄 page.tsx           # DSA Hub Landing
-│       │   │   ├── 📁 [topic]/
-│       │   │   │   └── 📄 page.tsx       # Dynamic DSA Concept Page
-│       │   │   └── 📁 problems/
-│       │   │       ├── 📄 page.tsx       # Problem Listing
-│       │   │       └── 📁 [id]/
-│       │   │           └── 📄 page.tsx   # Individual Problem + IDE
-│       │   │
-│       │   ├── 📁 dbms/
-│       │   │   ├── 📄 page.tsx           # DBMS Module Landing
-│       │   │   ├── 📁 concepts/
-│       │   │   │   ├── 📄 page.tsx       # Concepts Listing
-│       │   │   │   └── 📁 [topic]/
-│       │   │   │       └── 📄 page.tsx   # Dynamic DBMS Concept Page
-│       │   │   ├── 📁 er-builder/
-│       │   │   │   └── 📄 page.tsx       # Visual ER Diagram Builder
-│       │   │   └── 📁 sql-sandbox/
-│       │   │       └── 📄 page.tsx       # SQL Sandbox
-│       │   │
-│       │   └── 📁 profile/
-│       │       └── 📄 page.tsx           # User Profile & Settings
+│       │   ├── 📁 dsa/                  # 🚧 Scaffold
+│       │   ├── 📁 dbms/                 # 🚧 Scaffold
+│       │   └── 📁 profile/             # 🚧 Scaffold
 │       │
 │       ├── 📁 components/
-│       │   ├── 📁 ui/                    # Reusable Generic UI Primitives
-│       │   │   ├── 📄 Button.tsx
-│       │   │   ├── 📄 Card.tsx
-│       │   │   ├── 📄 Modal.tsx
-│       │   │   ├── 📄 Badge.tsx
-│       │   │   ├── 📄 Tabs.tsx
-│       │   │   ├── 📄 Tooltip.tsx
-│       │   │   ├── 📄 Skeleton.tsx
-│       │   │   └── 📄 Spinner.tsx
-│       │   │
-│       │   ├── 📁 layout/
-│       │   │   ├── 📄 Navbar.tsx
-│       │   │   ├── 📄 Sidebar.tsx
-│       │   │   ├── 📄 Footer.tsx
-│       │   │   └── 📄 PageWrapper.tsx
-│       │   │
-│       │   ├── 📁 auth/
-│       │   │   ├── 📄 LoginForm.tsx
-│       │   │   ├── 📄 SignupForm.tsx
-│       │   │   └── 📄 AuthGuard.tsx
-│       │   │
-│       │   ├── 📁 dashboard/
-│       │   │   ├── 📄 StatsCard.tsx
-│       │   │   ├── 📄 StreakWidget.tsx
-│       │   │   ├── 📄 ProgressChart.tsx
-│       │   │   ├── 📄 SubmissionHistoryTable.tsx
-│       │   │   └── 📄 LanguageUsageChart.tsx
-│       │   │
-│       │   ├── 📁 dsa/
-│       │   │   ├── 📄 ConceptCard.tsx
-│       │   │   ├── 📄 ComplexityBadge.tsx
-│       │   │   ├── 📄 BigOTable.tsx
-│       │   │   ├── 📄 ProblemCard.tsx
-│       │   │   ├── 📄 AlgorithmStepper.tsx   # Time-Travel Debugger
-│       │   │   └── 📄 TopicFilterBar.tsx
-│       │   │
-│       │   ├── 📁 ide/
-│       │   │   ├── 📄 CodeEditor.tsx          # Monaco Editor Wrapper
-│       │   │   ├── 📄 LanguageSelector.tsx
-│       │   │   ├── 📄 RunButton.tsx
-│       │   │   ├── 📄 OutputPanel.tsx
-│       │   │   ├── 📄 TestCasePanel.tsx
-│       │   │   └── 📄 ExecutionMetrics.tsx    # Time & Memory Usage
-│       │   │
-│       │   ├── 📁 ai-tutor/
-│       │   │   ├── 📄 AIFeedbackPanel.tsx
-│       │   │   ├── 📄 HintBox.tsx
-│       │   │   └── 📄 ComplexityAnalysisBubble.tsx
-│       │   │
-│       │   ├── 📁 dbms/
-│       │   │   ├── 📄 ConceptAccordion.tsx
-│       │   │   ├── 📄 NormalizationStepper.tsx
-│       │   │   ├── 📄 RelationalModelDiagram.tsx
-│       │   │   └── 📄 KeysExplainer.tsx
-│       │   │
-│       │   ├── 📁 er-builder/
-│       │   │   ├── 📄 ERCanvas.tsx             # React Flow Canvas
-│       │   │   ├── 📄 EntityNode.tsx
-│       │   │   ├── 📄 RelationshipEdge.tsx
-│       │   │   ├── 📄 AttributeNode.tsx
-│       │   │   ├── 📄 ERToolbar.tsx
-│       │   │   ├── 📄 SQLtoERParser.tsx        # SQL → ER Diagram
-│       │   │   └── 📄 ERtoSQLExporter.tsx      # ER Diagram → SQL Schema
-│       │   │
-│       │   └── 📁 sql-sandbox/
-│       │       ├── 📄 SQLEditor.tsx
-│       │       ├── 📄 QueryResultTable.tsx
-│       │       ├── 📄 SchemaViewer.tsx
-│       │       └── 📄 QueryVisualizer.tsx      # Visual EXPLAIN / JOIN Animator
+│       │   ├── 📁 ui/                   # 🚧 Scaffold (Button, Card, Modal…)
+│       │   ├── 📁 layout/               # 🚧 Scaffold (Navbar, Sidebar…)
+│       │   ├── 📁 auth/                 # 🚧 Scaffold (LoginForm, SignupForm…)
+│       │   ├── 📁 dashboard/            # 🚧 Scaffold (StatsCard, StreakWidget…)
+│       │   ├── 📁 dsa/                  # 🚧 Scaffold
+│       │   ├── 📁 ide/                  # 🚧 Scaffold (CodeEditor / Monaco)
+│       │   ├── 📁 ai-tutor/             # 🚧 Scaffold
+│       │   ├── 📁 dbms/                 # 🚧 Scaffold
+│       │   ├── 📁 er-builder/           # 🚧 Scaffold (React Flow canvas)
+│       │   └── 📁 sql-sandbox/          # 🚧 Scaffold
 │       │
-│       ├── 📁 hooks/
+│       ├── 📁 hooks/                    # 🚧 Scaffold files created
 │       │   ├── 📄 useAuth.ts
 │       │   ├── 📄 useCodeExecution.ts
 │       │   ├── 📄 useSubmissions.ts
@@ -148,16 +93,19 @@ cerebyte/
 │       │   └── 📄 useERDiagram.ts
 │       │
 │       ├── 📁 lib/
-│       │   ├── 📄 supabaseClient.ts
-│       │   ├── 📄 apiClient.ts
-│       │   └── 📄 utils.ts
+│       │   ├── 📄 supabaseClient.ts     # ✅ Browser Supabase client
+│       │   ├── 📄 apiClient.ts          # 🚧 Scaffold
+│       │   ├── 📄 utils.ts              # 🚧 Scaffold
+│       │   └── 📁 supabase/
+│       │       ├── 📄 client.ts         # ✅ Browser client (SSR-safe)
+│       │       └── 📄 server.ts         # ✅ Server-side Supabase client
 │       │
-│       ├── 📁 store/                          # Global State (Zustand / Context)
+│       ├── 📁 store/                    # 🚧 Scaffold (Zustand stores)
 │       │   ├── 📄 authStore.ts
 │       │   ├── 📄 editorStore.ts
 │       │   └── 📄 erDiagramStore.ts
 │       │
-│       └── 📁 types/
+│       └── 📁 types/                    # 🚧 Scaffold
 │           ├── 📄 user.types.ts
 │           ├── 📄 problem.types.ts
 │           ├── 📄 submission.types.ts
@@ -166,121 +114,166 @@ cerebyte/
 │           └── 📄 er.types.ts
 │
 │
-├── 📁 backend/                               # Python FastAPI Application
-│   ├── 📄 requirements.txt
+├── 📁 backend/                          # Python FastAPI Application
+│   ├── 📄 requirements.txt              # ✅ Dependencies listed
 │   ├── 📄 Dockerfile
 │   ├── 📄 .env.example
-│   ├── 📄 main.py                            # FastAPI App Entry Point
+│   ├── 📄 main.py                       # ✅ FastAPI entry — CORS, routers, health
 │   │
 │   ├── 📁 app/
 │   │   ├── 📄 __init__.py
 │   │   │
-│   │   ├── 📁 api/                           # Route Definitions
-│   │   │   ├── 📄 __init__.py
-│   │   │   ├── 📁 v1/
-│   │   │   │   ├── 📄 __init__.py
-│   │   │   │   ├── 📄 auth.py
-│   │   │   │   ├── 📄 users.py
-│   │   │   │   ├── 📄 problems.py
-│   │   │   │   ├── 📄 submissions.py
-│   │   │   │   ├── 📄 execution.py           # Code Execution Routes
-│   │   │   │   ├── 📄 ai_tutor.py            # AI Feedback Routes
-│   │   │   │   ├── 📄 dsa_content.py
-│   │   │   │   ├── 📄 dbms_content.py
-│   │   │   │   └── 📄 sql_sandbox.py
+│   │   ├── 📁 api/v1/                   # Route files
+│   │   │   ├── 📄 auth.py               # ✅ Minimal auth route
+│   │   │   ├── 📄 users.py              # ✅ Minimal users route
+│   │   │   ├── 📄 problems.py           # 🚧 Scaffold
+│   │   │   ├── 📄 submissions.py        # 🚧 Scaffold
+│   │   │   ├── 📄 execution.py          # 🚧 Scaffold (Piston API)
+│   │   │   ├── 📄 ai_tutor.py           # 🚧 Scaffold (Groq API)
+│   │   │   ├── 📄 dsa_content.py        # 🚧 Scaffold
+│   │   │   ├── 📄 dbms_content.py       # 🚧 Scaffold
+│   │   │   └── 📄 sql_sandbox.py        # 🚧 Scaffold
 │   │   │
-│   │   ├── 📁 core/
-│   │   │   ├── 📄 __init__.py
-│   │   │   ├── 📄 config.py                  # App Configuration & Env Vars
-│   │   │   ├── 📄 security.py                # JWT / Auth Middleware
-│   │   │   └── 📄 dependencies.py            # FastAPI Dependency Injection
+│   │   ├── 📁 core/                     # ✅ Config + Security scaffolded
+│   │   │   ├── 📄 config.py
+│   │   │   ├── 📄 security.py
+│   │   │   └── 📄 dependencies.py
 │   │   │
-│   │   ├── 📁 models/                        # Pydantic & DB Models
-│   │   │   ├── 📄 __init__.py
-│   │   │   ├── 📄 user.py
-│   │   │   ├── 📄 problem.py
-│   │   │   ├── 📄 submission.py
-│   │   │   └── 📄 content.py
-│   │   │
-│   │   ├── 📁 schemas/                       # Pydantic Request/Response Schemas
-│   │   │   ├── 📄 __init__.py
-│   │   │   ├── 📄 user.py
-│   │   │   ├── 📄 execution.py
-│   │   │   ├── 📄 submission.py
-│   │   │   └── 📄 ai_tutor.py
-│   │   │
-│   │   ├── 📁 services/                      # Business Logic Layer
-│   │   │   ├── 📄 __init__.py
-│   │   │   ├── 📄 execution_service.py       # Piston API Integration
-│   │   │   ├── 📄 ai_tutor_service.py        # Groq API Integration
-│   │   │   ├── 📄 submission_service.py
-│   │   │   ├── 📄 user_service.py
-│   │   │   └── 📄 sql_sandbox_service.py
-│   │   │
-│   │   └── 📁 db/
-│   │       ├── 📄 __init__.py
-│   │       ├── 📄 client.py                  # Supabase Client Setup
-│   │       └── 📄 queries.py                 # Reusable DB Query Functions
+│   │   ├── 📁 models/                   # 🚧 Scaffold (Pydantic/DB models)
+│   │   ├── 📁 schemas/                  # 🚧 Scaffold (Request/Response schemas)
+│   │   ├── 📁 services/                 # 🚧 Scaffold (Business logic)
+│   │   └── 📁 db/                       # 🚧 Scaffold (Supabase client + queries)
 │   │
-│   └── 📁 tests/
-│       ├── 📄 __init__.py
-│       ├── 📄 test_execution.py
-│       ├── 📄 test_ai_tutor.py
-│       ├── 📄 test_submissions.py
-│       └── 📄 test_sql_sandbox.py
+│   └── 📁 tests/                        # 🚧 Scaffold
 │
 │
-├── 📁 database/                              # Supabase / PostgreSQL Schema & Seeds
-│   ├── 📄 schema.sql                         # Full DB Schema Definition
-│   ├── 📄 seed.sql                           # Seed Data (problems, concepts)
-│   │
-│   ├── 📁 migrations/
-│   │   ├── 📄 001_create_users.sql
-│   │   ├── 📄 002_create_problems.sql
-│   │   ├── 📄 003_create_submissions.sql
-│   │   ├── 📄 004_create_dsa_content.sql
-│   │   ├── 📄 005_create_dbms_content.sql
-│   │   └── 📄 006_create_progress_tracking.sql
-│   │
-│   └── 📁 mock_db/                           # Mock DB for SQL Sandbox
-│       ├── 📄 mock_schema.sql
-│       └── 📄 mock_data.sql
+├── 📁 database/                         # Supabase / PostgreSQL Schema & Seeds
+│   ├── 📄 schema.sql                    # 🚧 Not yet applied
+│   ├── 📄 seed.sql                      # 🚧 Not yet applied
+│   ├── 📁 migrations/                   # 🚧 Migration files scaffolded
+│   └── 📁 mock_db/                      # 🚧 SQL Sandbox mock data
 │
 │
-└── 📁 docs/                                  # Project Documentation
+└── 📁 docs/                             # 🚧 Documentation (scaffold)
     ├── 📄 architecture.md
     ├── 📄 api-reference.md
     ├── 📄 setup-guide.md
-    ├── 📄 tech-stack.md
-    └── 📁 diagrams/
-        ├── 📄 system-architecture.png
-        ├── 📄 db-erd.png
-        └── 📄 user-flow.png
+    └── 📄 tech-stack.md
 ```
 
 ---
 
-## 🛠️ Tech Stack Summary
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
-| **Frontend** | Next.js (React), Tailwind CSS |
-| **Code Editor** | Monaco Editor |
-| **ER Diagrams** | React Flow |
-| **Backend** | Python, FastAPI |
-| **Database & Auth** | Supabase (PostgreSQL) |
-| **Code Execution** | Piston API (sandboxed) |
-| **AI Tutor** | Groq API |
+| **Frontend** | Next.js 15 (App Router), TypeScript, Tailwind CSS |
+| **Auth** | Supabase Auth (email/password + OAuth) |
+| **Code Editor** | Monaco Editor *(planned)* |
+| **ER Diagrams** | React Flow *(planned)* |
+| **Backend** | Python 3.13, FastAPI, Uvicorn |
+| **Database** | Supabase (PostgreSQL) |
+| **Code Execution** | Piston API *(planned)* |
+| **AI Tutor** | Groq API *(planned)* |
 | **Containerization** | Docker, Docker Compose |
 
 ---
 
-## 🚀 Core Modules
+## ⚡ Local Setup
+
+### Prerequisites
+- Node.js 18+
+- Python 3.10+
+- A [Supabase](https://supabase.com) project
+
+### 1. Clone & configure env vars
+
+```bash
+# Root .env (backend)
+cp .env.example .env
+
+# Frontend env
+cp frontend/.env.local.example frontend/.env.local
+```
+
+Edit `frontend/.env.local`:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://<your-project>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your-anon-key>
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
+
+### 2. Supabase — Enable Email Auth
+
+> Go to **Supabase Dashboard → Authentication → Providers → Email**
+> - Toggle **Enable Email provider** → ON
+> - Toggle **Confirm email** → OFF *(for local dev)*
+
+Or create a user manually: **Authentication → Users → Add user**
+
+### 3. Frontend
+
+```powershell
+cd frontend
+npm install
+npm run dev
+# Runs at http://localhost:3000
+```
+
+### 4. Backend
+
+```powershell
+cd backend
+.\venv\Scripts\Activate   # Windows
+# python -m venv venv && source venv/bin/activate  (Mac/Linux)
+
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+# Runs at http://localhost:8000
+# API docs at http://localhost:8000/docs
+```
+
+---
+
+## 🗺️ Routes
+
+| Route | Status | Notes |
+|---|---|---|
+| `/` | ✅ Live | Landing page |
+| `/login` | ✅ Live | Supabase email login |
+| `/signup` | ✅ Live | Supabase email signup |
+| `/auth/callback` | ✅ Live | OAuth code → session exchange |
+| `/dashboard` | ✅ Live | Auth-protected; redirects to `/login` if no session |
+| `/dsa` | 🚧 Scaffold | DSA Hub |
+| `/dsa/problems` | 🚧 Scaffold | Problem listing |
+| `/dsa/problems/[id]` | 🚧 Scaffold | IDE + problem view |
+| `/dbms` | 🚧 Scaffold | DBMS landing |
+| `/dbms/er-builder` | 🚧 Scaffold | ER Diagram builder |
+| `/dbms/sql-sandbox` | 🚧 Scaffold | SQL Sandbox |
+| `/profile` | 🚧 Scaffold | User profile & settings |
+
+### Backend API
+
+| Endpoint | Status |
+|---|---|
+| `GET /health` | ✅ Live |
+| `GET /` | ✅ Live |
+| `GET /api/v1/auth/...` | ✅ Minimal |
+| `GET /api/v1/users/...` | ✅ Minimal |
+| `POST /api/v1/execution/run` | 🚧 Scaffold |
+| `POST /api/v1/ai-tutor/feedback` | 🚧 Scaffold |
+| `GET /api/v1/problems` | 🚧 Scaffold |
+| `POST /api/v1/submissions` | 🚧 Scaffold |
+| `POST /api/v1/sql-sandbox/execute` | 🚧 Scaffold |
+
+---
+
+## 🚀 Core Modules (Planned)
 
 - **DSA Learning Hub** — Categorized concepts with Big-O analysis and the Algorithm Time-Travel Stepper
-- **In-Browser IDE** — Multi-language editor with remote sandboxed execution, test cases, and execution metrics
-- **AI Code Critic** — Powered by Groq; gives hints and complexity feedback without spoiling solutions
+- **In-Browser IDE** — Multi-language editor (Monaco) with remote sandboxed execution via Piston API
+- **AI Code Critic** — Powered by Groq; hints and complexity feedback without spoiling solutions
 - **DBMS Module** — Interactive tutorials on relational models, normalization, and keys
-- **ER Diagram Builder** — Drag-and-drop canvas with SQL↔ER two-way conversion
-- **SQL Sandbox** — Live query editor against a mock DB with a visual query execution explainer
+- **ER Diagram Builder** — Drag-and-drop canvas (React Flow) with SQL ↔ ER two-way conversion
+- **SQL Sandbox** — Live query editor against a mock DB with visual query execution explainer
 - **User Dashboard** — Tracks streaks, submission history, language usage, and performance over time
