@@ -6,6 +6,13 @@
 
 ---
 
+## 👥 Team & Responsibilities
+
+- **Arjun**: Frontend Development (UI/UX, Next.js, Tailwind CSS, Monaco Editor, React Flow)
+- **Abhishiv**: Backend Development (FastAPI, Python) & Database Architecture (Supabase, PostgreSQL)
+
+---
+
 ## 🚦 Project Status
 
 | Module | Status |
@@ -14,15 +21,15 @@
 | **Auth (Login / Signup)** | ✅ Built (Supabase email + OAuth-ready) |
 | **Auth Callback & Middleware** | ✅ Built |
 | **User Dashboard** | ✅ Built (shell — stats hardcoded, module links present) |
-| **FastAPI Backend** | ✅ Running (auth + users routes wired) |
-| **DSA Hub** | 🚧 Scaffold only |
-| **In-Browser IDE** | 🚧 Scaffold only |
-| **AI Code Critic** | 🚧 Scaffold only |
-| **DBMS Module** | 🚧 Scaffold only |
-| **ER Diagram Builder** | 🚧 Scaffold only |
-| **SQL Sandbox** | 🚧 Scaffold only |
-| **Profile Page** | 🚧 Scaffold only |
-| **Database Migrations** | 🚧 Not yet applied |
+| **FastAPI Backend** | ✅ Production Ready (Service-oriented architecture) |
+| **DSA Hub** | ✅ Full Backend + Lessons + Code Execution |
+| **In-Browser IDE** | ✅ Remote execution (Piston) + Local Tests |
+| **AI Code Critic** | ✅ Groq Llama 3 Integration |
+| **DBMS Module** | ✅ SQL Sandbox + SQL Lessons |
+| **ER Diagram Builder** | ✅ CRUD Backend Ready |
+| **SQL Sandbox** | ✅ In-memory Isolated Execution |
+| **Profile Page** | ✅ Profile Sync + Update Ready |
+| **Database Migrations** | ✅ Atomic Migrations (001-006) |
 
 ---
 
@@ -148,10 +155,16 @@ cerebyte/
 │
 │
 ├── 📁 database/                         # Supabase / PostgreSQL Schema & Seeds
-│   ├── 📄 schema.sql                    # 🚧 Not yet applied
-│   ├── 📄 seed.sql                      # 🚧 Not yet applied
-│   ├── 📁 migrations/                   # 🚧 Migration files scaffolded
-│   └── 📁 mock_db/                      # 🚧 SQL Sandbox mock data
+│   ├── 📄 schema.sql                    # Combined schema
+│   ├── 📄 seed.sql                      # Comprehensive seed data
+│   ├── 📁 migrations/                   # Atomic SQL migrations
+│   │   ├── 📄 001_create_users.sql
+│   │   ├── 📄 002_create_problems.sql
+│   │   ├── 📄 003_create_submissions.sql
+│   │   ├── 📄 004_create_dsa_content.sql
+│   │   ├── 📄 005_create_dbms_content.sql
+│   │   └── 📄 006_create_progress_tracking.sql
+│   └── 📁 mock_db/                      # SQL Sandbox mock data
 │
 │
 └── 📁 docs/                             # 🚧 Documentation (scaffold)
@@ -258,13 +271,18 @@ uvicorn main:app --reload --port 8000
 |---|---|
 | `GET /health` | ✅ Live |
 | `GET /` | ✅ Live |
-| `GET /api/v1/auth/...` | ✅ Minimal |
-| `GET /api/v1/users/...` | ✅ Minimal |
-| `POST /api/v1/execution/run` | 🚧 Scaffold |
-| `POST /api/v1/ai-tutor/feedback` | 🚧 Scaffold |
-| `GET /api/v1/problems` | 🚧 Scaffold |
-| `POST /api/v1/submissions` | 🚧 Scaffold |
-| `POST /api/v1/sql-sandbox/execute` | 🚧 Scaffold |
+| `GET /api/v1/auth/...` | ✅ Built |
+| `GET /api/v1/users/...` | ✅ Built |
+| `POST /api/v1/execution/run` | ✅ Built (Piston) |
+| `POST /api/v1/ai-tutor/feedback` | ✅ Built (Groq) |
+| `GET /api/v1/problems` | ✅ Built |
+| `POST /api/v1/submissions` | ✅ Built |
+| `POST /api/v1/sql-sandbox/execute` | ✅ Built (SQLite) |
+| `GET /api/v1/dsa-content/lessons` | ✅ Built |
+| `GET /api/v1/dbms-content/lessons` | ✅ Built |
+| `GET /api/v1/er-diagrams` | ✅ Built |
+| `POST /api/v1/progress/complete` | ✅ Built |
+| `GET /api/v1/progress/` | ✅ Built |
 
 ---
 

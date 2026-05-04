@@ -16,26 +16,31 @@ export default function SignupPage() {
     setLoading(true);
     setError(null);
 
-    const res = await fetch("/api/auth/sign-up", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, fullName }),
+    const { createClient } = await import("@/lib/supabase/client");
+    const supabase = createClient();
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { full_name: fullName },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
     });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error ?? "Signup failed. Please try again.");
+    if (error) {
+      setError(error.message);
       setLoading(false);
       return;
     }
 
-    const { needsConfirmation } = await res.json();
+    const needsConfirmation = !data.session;
 
     if (needsConfirmation) {
       setSuccess(true);
       setLoading(false);
     } else {
-      // Session cookies are set server-side — navigate to dashboard.
+      // Refresh the router to apply new session and navigate
       window.location.href = "/dashboard";
     }
   }

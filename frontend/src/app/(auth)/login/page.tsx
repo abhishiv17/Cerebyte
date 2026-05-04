@@ -14,23 +14,21 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
-    // Sign in via server-side route so session cookies are written into the
-    // HTTP response (Set-Cookie). The browser stores them before we navigate,
-    // which means the middleware's getUser() will find the session.
-    const res = await fetch("/api/auth/sign-in", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+    const { createClient } = await import("@/lib/supabase/client");
+    const supabase = createClient();
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
     });
 
-    if (!res.ok) {
-      const data = await res.json();
-      setError(data.error ?? "Login failed. Please try again.");
+    if (error) {
+      setError(error.message);
       setLoading(false);
       return;
     }
 
-    // Cookies are now set in the browser — hard navigate to dashboard.
+    // Refresh the router to apply new session and navigate
     window.location.href = "/dashboard";
   }
 
