@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --font-inter: "Inter", system-ui, sans-serif;
+  --font-sans: "Space Grotesk", system-ui, sans-serif;
+  --font-display: "Anton", "Impact", sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", monospace;
 }
 
@@ -16,64 +17,59 @@ html {
 }
 
 body {
-  background-color: #0a0a0f;
-  color: #f8fafc;
-  font-family: var(--font-inter);
+  background-color: #f4f4ec; /* cream */
+  color: #111111; /* black */
+  font-family: var(--font-sans);
   min-height: 100vh;
+  /* Add a subtle paper texture/noise using a radial gradient or base64 SVG, 
+     but for brutalism, a clean stark background works just fine too. */
+}
+
+/* Typography Utilities */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+.font-mono-accent {
+  font-family: var(--font-mono);
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 12px;
 }
 ::-webkit-scrollbar-track {
-  background: #111118;
+  background: #f4f4ec;
+  border-left: 2px solid #111;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3735cc;
-  border-radius: 3px;
+  background: #111;
+  border: 2px solid #f4f4ec;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #5b6ef2;
+  background: #2e5b32;
 }
 
-/* Glass card utility */
-.glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+/* Neo-Brutalist Utilities */
+.brutal-box {
+  @apply border-4 border-brand-black bg-white shadow-brutal transition-transform duration-200;
 }
 
-/* Glow effects */
-.glow-brand {
-  box-shadow: 0 0 30px rgba(91, 110, 242, 0.3);
+.brutal-button {
+  @apply inline-flex items-center justify-center border-4 border-brand-black bg-brand-green text-white font-display text-xl uppercase tracking-wider px-8 py-4 shadow-brutal transition-all duration-100 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none cursor-pointer;
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, #7b94f8 0%, #5b6ef2 50%, #a78bfa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.brutal-button-alt {
+  @apply inline-flex items-center justify-center border-4 border-brand-black bg-white text-brand-black font-display text-xl uppercase tracking-wider px-8 py-4 shadow-brutal transition-all duration-100 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(17,17,17,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none cursor-pointer;
 }
 
-/* Input focus ring */
-.input-field {
-  @apply w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30
-         focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
-         transition-all duration-200;
+.brutal-input {
+  @apply w-full px-4 py-3 bg-white border-4 border-brand-black text-brand-black placeholder:text-brand-black/50 font-mono-accent focus:outline-none focus:shadow-[4px_4px_0px_0px_rgba(46,91,50,1)] transition-all;
 }
 
-/* Button utilities */
-.btn-primary {
-  @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
-         bg-brand-600 hover:bg-brand-500 text-white
-         transition-all duration-200 hover:shadow-lg hover:shadow-brand-600/30
-         active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+/* Sticker Effect */
+.sticker {
+  @apply inline-block border-2 border-brand-black bg-[#f4f4ec] font-mono-accent text-sm font-bold uppercase px-2 py-1 shadow-brutal-sm transform -rotate-2;
 }
 
-.btn-ghost {
-  @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold
-         bg-white/5 hover:bg-white/10 text-white border border-white/10 hover:border-white/20
-         transition-all duration-200 active:scale-95;
-}

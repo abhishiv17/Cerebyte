@@ -47,53 +47,63 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="glass rounded-2xl p-10 max-w-md w-full text-center animate-slide-up">
-          <div className="text-5xl mb-4">📬</div>
-          <h2 className="text-2xl font-bold mb-3">Check your email</h2>
-          <p className="text-white/50 mb-6">
-            We sent a confirmation link to <strong className="text-white">{email}</strong>.
+      <div className="min-h-screen flex items-center justify-center px-4 bg-brand-cream relative overflow-hidden">
+        {/* Background Pattern */}
+        <div 
+          className="absolute inset-0 opacity-10 pointer-events-none" 
+          style={{ backgroundImage: 'radial-gradient(#111 2px, transparent 2px)', backgroundSize: '32px 32px' }}
+        />
+        
+        <div className="brutal-box p-10 max-w-md w-full text-center animate-slide-up z-10">
+          <div className="text-6xl mb-6">📬</div>
+          <h2 className="text-4xl font-display uppercase mb-4 text-brand-black">Check your email.</h2>
+          <p className="font-mono-accent font-bold text-brand-black/70 mb-8 uppercase text-sm leading-relaxed">
+            We sent a confirmation link to <br/><strong className="text-brand-black text-base">{email}</strong><br/>
             Click it to activate your account.
           </p>
-          <p className="text-sm text-white/30">
-            Pro tip: For local development, disable email confirmation in{" "}
-            <span className="text-brand-400">Supabase → Authentication → Settings</span>
-          </p>
+          <div className="border-4 border-brand-black p-4 bg-brand-lightGreen/20 text-left">
+            <p className="font-mono-accent text-xs font-bold uppercase text-brand-black">
+              Pro tip: For local dev, disable email confirmation in <br/>
+              <span className="text-brand-green">Supabase → Auth → Settings</span>
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-grid-pattern bg-grid opacity-30" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-96 h-96 bg-violet-600/15 rounded-full blur-3xl" />
+    <div className="min-h-screen flex items-center justify-center px-4 relative bg-brand-cream overflow-hidden py-12">
+      {/* Background Pattern */}
+      <div 
+        className="absolute inset-0 opacity-10 pointer-events-none" 
+        style={{ backgroundImage: 'radial-gradient(#111 2px, transparent 2px)', backgroundSize: '32px 32px' }}
+      />
 
-      <div className="relative w-full max-w-md animate-slide-up">
+      <div className="relative w-full max-w-md animate-slide-up z-10">
         {/* Logo */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-xl shadow-lg shadow-brand-600/50 group-hover:scale-110 transition-transform">
-              🧠
+            <div className="w-12 h-12 border-4 border-brand-black bg-brand-green flex items-center justify-center text-white font-display text-2xl shadow-brutal-sm group-hover:-translate-y-1 transition-transform">
+              C.
             </div>
-            <span className="text-2xl font-bold">Cerebyte</span>
+            <span className="text-4xl font-display uppercase tracking-widest mt-1 text-brand-black">Cerebyte</span>
           </Link>
-          <h1 className="text-3xl font-bold mt-6 mb-2">Create your account</h1>
-          <p className="text-white/50">Start your learning journey today</p>
+          <h1 className="text-5xl font-display uppercase mt-8 mb-2 text-brand-black">Start Now.</h1>
+          <p className="font-mono-accent text-sm text-brand-black/60 uppercase font-bold">Create your free account</p>
         </div>
 
         {/* Card */}
-        <div className="glass rounded-2xl p-8">
-          <form onSubmit={handleSignup} className="space-y-5">
+        <div className="brutal-box p-8 md:p-10">
+          <form onSubmit={handleSignup} className="space-y-6">
             {error && (
-              <div className="px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
-                {error}
+              <div className="px-4 py-3 border-4 border-brand-black bg-[#ffcccb] text-brand-black font-mono-accent text-sm font-bold shadow-brutal-sm">
+                ERROR: {error}
               </div>
             )}
 
             <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">
+              <label className="block font-mono-accent text-sm font-bold text-brand-black uppercase mb-2">
                 Full Name
               </label>
               <input
@@ -103,12 +113,12 @@ export default function SignupPage() {
                 onChange={(e) => setFullName(e.target.value)}
                 placeholder="Ada Lovelace"
                 required
-                className="input-field"
+                className="brutal-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">
+              <label className="block font-mono-accent text-sm font-bold text-brand-black uppercase mb-2">
                 Email address
               </label>
               <input
@@ -118,14 +128,14 @@ export default function SignupPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
                 required
-                className="input-field"
+                className="brutal-input"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-white/70 mb-2">
+              <label className="block font-mono-accent text-sm font-bold text-brand-black uppercase mb-2">
                 Password
-                <span className="text-white/30 ml-2 text-xs">(min. 6 characters)</span>
+                <span className="text-brand-black/40 ml-2 text-xs">(MIN. 6 CHARS)</span>
               </label>
               <input
                 id="password"
@@ -135,7 +145,7 @@ export default function SignupPage() {
                 placeholder="••••••••"
                 required
                 minLength={6}
-                className="input-field"
+                className="brutal-input"
               />
             </div>
 
@@ -143,28 +153,20 @@ export default function SignupPage() {
               id="signup-submit"
               type="submit"
               disabled={loading}
-              className="btn-primary w-full py-3.5 text-base mt-2"
+              className="brutal-button w-full mt-4"
             >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                  </svg>
-                  Creating account…
-                </span>
-              ) : (
-                "Create Account →"
-              )}
+              {loading ? "CREATING..." : "CREATE ACCOUNT"}
             </button>
           </form>
 
-          <p className="text-center text-white/40 text-sm mt-6">
-            Already have an account?{" "}
-            <Link href="/login" className="text-brand-400 hover:text-brand-300 font-medium transition-colors">
-              Sign in
-            </Link>
-          </p>
+          <div className="mt-8 pt-6 border-t-4 border-brand-black text-center">
+            <p className="font-mono-accent text-brand-black/60 text-sm font-bold uppercase">
+              Already have an account?{" "}
+              <Link href="/login" className="text-brand-black hover:text-brand-green hover:underline decoration-2 underline-offset-4 transition-colors">
+                SIGN IN
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
