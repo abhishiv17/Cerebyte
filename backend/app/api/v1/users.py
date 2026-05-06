@@ -13,7 +13,7 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         return {
             "id": current_user["id"],
             "email": current_user["email"],
-            "display_name": current_user["user_metadata"].get("full_name", ""),
+            "full_name": current_user["user_metadata"].get("full_name", ""),
         }
     return profile
 

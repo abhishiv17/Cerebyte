@@ -1,9 +1,8 @@
-from typing import List
+from fastapi import HTTPException
 from app.db.client import supabase
-from app.schemas.submission import SubmissionCreate, SubmissionResponse
+from app.schemas.submission import SubmissionCreate
 from app.schemas.execution import CodeExecutionRequest
 from app.services.execution_service import execute_code
-import json
 
 async def create_submission(submission: SubmissionCreate, user_id: str) -> dict:
     """Submit code for a problem, execute it, and save the result."""
