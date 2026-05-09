@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.api.v1 import auth, users, test_routes, problems, submissions, execution, ai_tutor, sql_sandbox, dbms_content, dsa_content, er_diagrams, progress
+from app.api.v1 import auth, users, test_routes, problems, submissions, execution, ai_tutor, sql_sandbox, dbms_content, dsa_content, er_diagrams, progress, onboarding, gamification
 from app.core.config import settings
 
 app = FastAPI(
@@ -56,6 +56,8 @@ app.include_router(dbms_content.router, prefix="/api/v1/dbms-content", tags=["db
 app.include_router(dsa_content.router, prefix="/api/v1/dsa-content", tags=["dsa_content"])
 app.include_router(er_diagrams.router, prefix="/api/v1/er-diagrams", tags=["er_diagrams"])
 app.include_router(progress.router, prefix="/api/v1/progress", tags=["progress"])
+app.include_router(onboarding.router, prefix="/api/v1/onboarding", tags=["onboarding"])
+app.include_router(gamification.router, prefix="/api/v1/gamification", tags=["gamification"])
 
 
 # ---------------------------------------------------------------------------

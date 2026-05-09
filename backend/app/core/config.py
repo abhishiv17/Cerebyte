@@ -17,6 +17,9 @@ class Settings(BaseSettings):
     # AI
     groq_api_key: str
 
+    # Code Execution (Judge0 CE via RapidAPI — optional, falls back to local subprocess)
+    judge0_api_key: str = ""
+
     # App
     app_env: str = "development"
     api_prefix: str = "/api/v1"

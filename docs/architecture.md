@@ -7,7 +7,7 @@ Cerebyte is built on a modern, decoupled architecture designed for performance, 
 2. **Backend Service**: Python FastAPI
 3. **Database**: Supabase (PostgreSQL)
 4. **Third-Party Integrations**:
-   - Piston API (Code Execution Engine)
+   - Judge0 CE API (Code Execution Engine)
    - Groq API / Llama 3 (AI Code Critic)
 
 ## 1. Frontend (Next.js)
@@ -16,8 +16,9 @@ The frontend is structured into functional modules to separate concerns and maxi
 - **Data Fetching**: Custom hooks wrapping Axios (`useSubmissions`, `useERDiagram`, etc.).
 - **Interactive UI**:
    - `Monaco Editor` embedded for the IDE experience.
+   - `Data Structure Visualizer` embedded in the IDE output pane using SVG for Neo-Brutalist tree/graph representation.
    - `React Flow` manages the dynamic ER diagram canvas.
-   - `Shadcn UI` + `Tailwind CSS` for a highly polished, responsive design system.
+   - `Shadcn UI` + `Tailwind CSS` for a highly polished, responsive design system with robust client-side search/filtering.
 - **Routing**: Next.js App Router utilizes Route Groups (e.g., `(auth)`) and server-side middleware to protect dashboard and IDE routes automatically.
 
 ## 2. Backend (FastAPI)
@@ -34,5 +35,5 @@ We utilize Supabase to handle Identity/Auth and primary persistent storage.
 - **Automated Triggers**: Postgres functions automatically manage `updated_at` columns on row modifications, and trigger user profile creation upon Supabase Auth sign-up.
 
 ## 4. Execution Sandbox
-- **Python/DSA Sandbox**: Uses the open-source **Piston API** to safely execute arbitrary user code in isolated Docker containers, returning `stdout`, execution time, and exit codes.
+- **Python/DSA Sandbox**: Uses **Judge0 CE** (via RapidAPI) to safely execute arbitrary user code in sandboxed environments, returning `stdout`, execution time, and exit codes. Falls back to local subprocess execution in development.
 - **SQL Sandbox**: Uses an isolated, in-memory Python `sqlite3` execution layer (or similar) built directly into the FastAPI backend (`sql_sandbox_service.py`), ensuring users cannot damage the main Supabase database.

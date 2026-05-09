@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 import pytest
 from app.services import execution_service
 from app.schemas.execution import CodeExecutionRequest
@@ -9,11 +10,22 @@ async def test_code_execution_structure():
         language="python",
         code="print(5*5)"
     )
-    # We test if the service can at least be called
-    # Actual network call to Piston is wrapped in a try/except for test environments
+    # Execution uses Judge0 (remote) with local subprocess fallback
     try:
         response = await execution_service.execute_code(request)
         if response:
             assert hasattr(response, 'stdout')
+            assert hasattr(response, 'stderr')
+            assert hasattr(response, 'exit_code')
     except Exception:
-        pytest.skip("Network unavailable for Piston API")
+        pytest.skip("Execution engine unavailable in test environment")
+
+@pytest.mark.asyncio
+async def test_unsupported_language():
+    """Test that unsupported languages are rejected."""
+    request = CodeExecutionRequest(
+        language="cobol",
+        code="DISPLAY 'Hello'"
+    )
+    with pytest.raises(Exception):
+        await execution_service.execute_code(request)

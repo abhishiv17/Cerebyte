@@ -22,7 +22,7 @@ All protected routes expect a valid Supabase JWT token in the `Authorization: Be
 ## Code Execution & Submissions
 | Endpoint | Method | Description | Auth Required |
 |----------|--------|-------------|---------------|
-| `/api/v1/execution/run` | `POST` | Execute raw code using the Piston API | Yes |
+| `/api/v1/execution/run` | `POST` | Execute raw code using Judge0 CE (with local subprocess fallback) | Yes |
 | `/api/v1/submissions` | `POST` | Submit code for a specific problem. Automatically runs against test cases. | Yes |
 | `/api/v1/submissions` | `GET` | Get a user's submission history | Yes |
 

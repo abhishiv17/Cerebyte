@@ -18,7 +18,8 @@ Follow these steps to set up Cerebyte on your local machine for development.
    - Turn "Confirm email" **OFF** to make local development easier.
 3. Open the **SQL Editor** in the Supabase Dashboard.
 4. Copy the contents of `database/schema.sql` and run it. This will build all required tables, triggers, and Row Level Security policies.
-5. (Optional but recommended) Copy the contents of `database/seed.sql` and run it to populate your app with sample DSA problems and DBMS lessons.
+5. Apply any additional SQL scripts inside the `database/migrations/` folder (such as `010_seed_more_problems.sql`) to keep your database up to date.
+6. (Optional but recommended) Copy the contents of `database/seed.sql` and run it to populate your app with sample DSA problems and DBMS lessons.
 
 ---
 

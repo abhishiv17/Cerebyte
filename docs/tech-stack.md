@@ -8,6 +8,7 @@ Cerebyte uses a modern, high-performance technology stack to deliver a seamless 
 * **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [Shadcn UI](https://ui.shadcn.com/) - Provides a robust, highly customizable, and accessible design system.
 * **State Management**: [Zustand](https://github.com/pmndrs/zustand) - Used for global state that doesn't fit well into React Context (e.g. tracking open editor tabs, diagram canvas state).
 * **Interactive Editor**: [Monaco Editor](https://microsoft.github.io/monaco-editor/) - Powers the in-browser IDE for the DSA module, providing VSCode-level syntax highlighting and autocompletion.
+* **Data Visualization**: Custom SVG components designed to render interactive, Neo-Brutalist structural representations of algorithms and data structures (e.g. Binary Search Trees).
 * **Visual Canvas**: [React Flow](https://reactflow.dev/) - Powers the drag-and-drop interactive ER Diagram builder.
 
 ## Backend Service
@@ -23,6 +24,6 @@ Cerebyte uses a modern, high-performance technology stack to deliver a seamless 
 * **Authentication**: Supabase Auth (Email/Password + OAuth flows) deeply integrated with Next.js middleware and FastAPI dependencies via JWT validation.
 
 ## Infrastructure & Integrations
-* **Code Execution**: [Piston API](https://github.com/engineer-man/piston) - Provides robust, isolated Docker sandboxes for securely compiling and running untrusted user code submitted in the DSA module.
+* **Code Execution**: [Judge0 CE](https://ce.judge0.com/) — Industry-standard sandboxed code execution engine (via RapidAPI). Supports 60+ languages with automatic fallback to local subprocess for development environments.
 * **AI Engine**: [Groq Cloud (Llama 3)](https://groq.com/) - Powers the AI Tutor module, providing extremely low-latency code critiques, hints, and big-O analysis.
 * **Testing**: Pytest & Flake8 for backend static analysis and test execution.

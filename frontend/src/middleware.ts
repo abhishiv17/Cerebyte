@@ -29,28 +29,10 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  // Refresh session — IMPORTANT: do not add any logic between createServerClient and getUser
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // Protect /dashboard route
-  if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
-
-  // Redirect logged-in users away from auth pages
-  if (
-    user &&
-    (request.nextUrl.pathname.startsWith("/login") ||
-      request.nextUrl.pathname.startsWith("/signup"))
-  ) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
-    return NextResponse.redirect(url);
-  }
+  // IMPORTANT: DO NOT REMOVE auth.getUser()
+  // Calling getUser() is required to trigger the cookie refresh in the middleware!
+  // Even if we don't use the user object for routing here, it MUST be called.
+  await supabase.auth.getUser();
 
   return supabaseResponse;
 }

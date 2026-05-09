@@ -6,34 +6,83 @@ from app.core.config import settings
 
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
+# ──────────────────────────────────────────────────────────────
+# Admiral Grace Hopper — Persistent System Prompt
+# ──────────────────────────────────────────────────────────────
+
+HOPPER_SYSTEM_PROMPT = """You are Admiral Grace Hopper — legendary computer scientist, United States Navy Rear Admiral, and the "Grandmother of Code." You are the permanent AI tutor aboard the USS Cerebyte.
+
+PERSONALITY & TONE:
+- Witty, warm, and deeply encouraging — but never patronizing.
+- You speak with naval metaphors: code is the "engine room," algorithms are "propulsion systems," data structures are "hull components," debugging is "pulling moths from the relays."
+- You reference your famous quotes naturally: "The most dangerous phrase is 'We've always done it this way.'" and "A ship in port is safe, but that's not what ships are built for."
+- You address users by their naval rank (Ensign, Lieutenant, Commander, Admiral of the Fleet).
+- You explain concepts using physical metaphors: a nanosecond is the distance light travels in one billionth of a second (about 11.8 inches), linked lists are "communication cables between logic nodes," hash tables are "indexed filing cabinets in the ship's archive."
+
+BEHAVIOR RULES:
+- For HINTS: Guide without giving away the answer. Point out logic flaws, suggest concepts to review, offer time/space complexity hints. Be the mentor who pushes them to think.
+- For SOLUTIONS: Provide the complete, correct solution with a clear explanation using your naval metaphors. Walk through the logic step-by-step.
+- Always be technically precise but accessible to a sharp beginner.
+- Keep responses concise (under 400 words unless the problem is complex).
+- Use markdown formatting: bold for emphasis, code blocks for code, bullet points for steps.
+- Acknowledge the recruit's rank and XP to personalize motivation.
+
+NEVER break character. You ARE Admiral Hopper."""
+
+
 async def get_tutor_feedback(request: TutorRequest, user_id: str) -> TutorResponse:
-    """Ask the AI tutor (powered by Groq) for help with code."""
+    """Ask Admiral Hopper (powered by Groq LPU) for help with code."""
     
-    # Get problem details to provide context to the AI
-    res = supabase.table("problems").select("*").eq("id", request.problem_id).execute()
-    if not res.data:
-        raise HTTPException(status_code=404, detail="Problem not found")
+    # Try to get problem details for context
+    problem = None
+    try:
+        res = supabase.table("problems").select("*").eq("id", request.problem_id).execute()
+        if res.data:
+            problem = res.data[0]
+    except Exception:
+        pass  # problem_id may not be a valid UUID — that's fine for general queries
+
+    # Get user rank/XP for personalized dialogue
+    user_rank = "Ensign"
+    user_xp = 0
+    try:
+        user_res = supabase.table("users").select("rank, xp, full_name").eq("id", user_id).execute()
+        if user_res.data:
+            user_rank = user_res.data[0].get("rank", "Ensign")
+            user_xp = user_res.data[0].get("xp", 0)
+    except Exception:
+        pass
+
+    # Check if tutor is enabled
+    try:
+        tutor_res = supabase.table("users").select("tutor_enabled").eq("id", user_id).execute()
+        if tutor_res.data and not tutor_res.data[0].get("tutor_enabled", True):
+            return TutorResponse(feedback="*The Admiral's comms channel is currently muted. Enable the tutor from your profile to resume transmissions.*")
+    except Exception:
+        pass
         
-    problem = res.data[0]
-    
-    # Ensure GROQ_API_KEY is available in the environment
+    # Ensure GROQ_API_KEY is available
     groq_key = settings.groq_api_key
     if not groq_key:
         raise HTTPException(status_code=500, detail="GROQ_API_KEY is not configured on the server")
-        
-    system_prompt = (
-        "You are 'Cerebyte AI', an expert programming tutor helping a student. "
-        "Your goal is to guide the student towards the solution without giving away the direct answer. "
-        "Point out logic flaws, suggest concepts they should review, or provide hints about time/space complexity. "
-        "Always be encouraging and concise."
-    )
-    
-    user_prompt = (
-        f"Problem: {problem['title']}\n"
-        f"Description: {problem['description']}\n\n"
-        f"My Code ({request.language}):\n{request.user_code}\n\n"
-        f"My Question: {request.user_query}"
-    )
+
+    # Build the contextual prompt with rank awareness
+    rank_context = f"\n[RECRUIT STATUS: Rank = {user_rank}, XP = {user_xp}]\n"
+
+    if problem:
+        user_prompt = (
+            f"{rank_context}"
+            f"Problem: {problem['title']}\n"
+            f"Description: {problem['description']}\n\n"
+            f"My Code ({request.language}):\n{request.user_code}\n\n"
+            f"My Question: {request.user_query}"
+        )
+    else:
+        user_prompt = (
+            f"{rank_context}"
+            f"My Code ({request.language}):\n{request.user_code}\n\n"
+            f"My Question: {request.user_query}"
+        )
     
     headers = {
         "Authorization": f"Bearer {groq_key}",
@@ -41,9 +90,9 @@ async def get_tutor_feedback(request: TutorRequest, user_id: str) -> TutorRespon
     }
     
     payload = {
-        "model": "llama3-8b-8192", 
+        "model": "llama-3.3-70b-versatile", 
         "messages": [
-            {"role": "system", "content": system_prompt},
+            {"role": "system", "content": HOPPER_SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt}
         ],
         "temperature": 0.5,

@@ -23,7 +23,7 @@
 | **User Dashboard** | ✅ Built |
 | **FastAPI Backend** | ✅ Production Ready |
 | **DSA Hub** | ✅ Full Backend + Problem Solving UI |
-| **In-Browser IDE** | ✅ Remote execution (Piston) + Result Stream |
+| **In-Browser IDE** | ✅ Remote execution (Judge0 CE) + Result Stream |
 | **AI Code Critic** | ✅ Groq Llama 3 Integration |
 | **DBMS Module** | ✅ SQL Sandbox + Schema Visualization |
 | **ER Diagram Builder** | ✅ React Flow Integration (CRUD Ready) |
@@ -137,7 +137,7 @@ cerebyte/
 │   │   │   ├── 📄 users.py              # ✅ User Management
 │   │   │   ├── 📄 problems.py           # ✅ Problem Sets
 │   │   │   ├── 📄 submissions.py        # ✅ Submission Logic
-│   │   │   ├── 📄 execution.py          # ✅ Code Execution (Piston)
+│   │   │   ├── 📄 execution.py          # ✅ Code Execution (Judge0 CE)
 │   │   │   ├── 📄 ai_tutor.py           # ✅ AI Feedback (Groq)
 │   │   │   ├── 📄 dsa_content.py        # ✅ DSA Lessons
 │   │   │   ├── 📄 dbms_content.py       # ✅ DBMS Lessons
@@ -186,7 +186,7 @@ cerebyte/
 | **ER Diagrams** | React Flow ✅ |
 | **Backend** | Python 3.13, FastAPI, Uvicorn |
 | **Database** | Supabase (PostgreSQL) |
-| **Code Execution** | Piston API ✅ |
+| **Code Execution** | Judge0 CE API (RapidAPI) ✅ |
 | **AI Tutor** | Groq API (Llama 3) ✅ |
 | **Containerization** | Docker, Docker Compose |
 
@@ -273,7 +273,7 @@ uvicorn main:app --reload --port 8000
 | `GET /` | ✅ Live |
 | `GET /api/v1/auth/...` | ✅ Built |
 | `GET /api/v1/users/...` | ✅ Built |
-| `POST /api/v1/execution/run` | ✅ Built (Piston) |
+| `POST /api/v1/execution/run` | ✅ Built (Judge0 CE) |
 | `POST /api/v1/ai-tutor/feedback` | ✅ Built (Groq) |
 | `GET /api/v1/problems` | ✅ Built |
 | `POST /api/v1/submissions` | ✅ Built |
@@ -286,13 +286,14 @@ uvicorn main:app --reload --port 8000
 
 ---
 
-## 🚀 Core Modules (Planned)
+## 🚀 Core Modules
 
-- **DSA Learning Hub** — Categorized concepts with Big-O analysis and the Algorithm Time-Travel Stepper.
-- **In-Browser IDE** — Multi-language editor (Monaco) with remote sandboxed execution via Piston API.
+- **DSA Learning Hub** — Categorized concepts with searchable problem sets, topic-based filtering, Big-O analysis, and daily challenges.
+- **In-Browser IDE** — Multi-language editor (Monaco) with remote sandboxed execution via Judge0 CE API.
+- **Graph Visualization** — Neo-Brutalist interactive data structure visualizer directly integrated into the IDE execution output pane.
 - **AI Code Critic** — Powered by Groq; provides hints, complexity analysis, and optimization tips.
 - **DBMS Module** — Interactive tutorials on relational models, normalization, and keys.
 - **ER Diagram Builder** — Drag-and-drop canvas (React Flow) with persistence and schema generation.
-- **SQL Sandbox** — Live query editor against a mock DB with visual query execution explainer.
+- **SQL Sandbox** — Live query editor against an isolated SQLite DB with visual query execution explainer.
 - **User Dashboard** — Tracks streaks, submission history, and performance metrics.
 - **Progress Tracking** — Atomic tracking of completed lessons and solved problems across all modules.
