@@ -26,7 +26,7 @@ CREATE INDEX IF NOT EXISTS idx_problems_difficulty ON public.problems(difficulty
 CREATE INDEX IF NOT EXISTS idx_problems_topic ON public.problems(topic);
 
 -- Trigger for problems
-DROP TRIGGER IF EXISTS set_problems_updated_at ON public.problems;
-CREATE TRIGGER set_problems_updated_at
+DROP TRIGGER IF EXISTS update_problems_updated_at ON public.problems;
+CREATE TRIGGER update_problems_updated_at
 BEFORE UPDATE ON public.problems
-FOR EACH ROW EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
+FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();

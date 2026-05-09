@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS public.users (
 );
 
 -- Function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION public.set_current_timestamp_updated_at()
+CREATE OR REPLACE FUNCTION public.update_updated_at_column()
 RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = timezone('utc'::text, now());
@@ -18,10 +18,10 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger for users
-DROP TRIGGER IF EXISTS set_users_updated_at ON public.users;
-CREATE TRIGGER set_users_updated_at
+DROP TRIGGER IF EXISTS update_users_updated_at ON public.users;
+CREATE TRIGGER update_users_updated_at
 BEFORE UPDATE ON public.users
-FOR EACH ROW EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
+FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
 
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 

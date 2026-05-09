@@ -34,7 +34,7 @@ DROP POLICY IF EXISTS "Users can manage their own diagrams" ON public.er_diagram
 CREATE POLICY "Users can manage their own diagrams" ON public.er_diagrams FOR ALL USING (auth.uid() = user_id);
 
 -- Trigger for er_diagrams
-DROP TRIGGER IF EXISTS set_er_diagrams_updated_at ON public.er_diagrams;
-CREATE TRIGGER set_er_diagrams_updated_at
+DROP TRIGGER IF EXISTS update_er_diagrams_updated_at ON public.er_diagrams;
+CREATE TRIGGER update_er_diagrams_updated_at
 BEFORE UPDATE ON public.er_diagrams
-FOR EACH ROW EXECUTE PROCEDURE public.set_current_timestamp_updated_at();
+FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();

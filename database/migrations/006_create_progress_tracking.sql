@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS public.user_progress (
     user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
     lesson_id UUID NOT NULL, 
     lesson_type TEXT CHECK (lesson_type IN ('dsa', 'dbms')) NOT NULL,
-    completed_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     UNIQUE(user_id, lesson_id, lesson_type)
 );
 
@@ -16,7 +16,7 @@ DROP POLICY IF EXISTS "Users can view their own progress" ON public.user_progres
 CREATE POLICY "Users can view their own progress" ON public.user_progress FOR SELECT USING (auth.uid() = user_id);
 
 DROP POLICY IF EXISTS "Users can record their own progress" ON public.user_progress;
-CREATE POLICY "Users can record their own progress" ON public.user_progress FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can record their own progress" ON public.user_progress FOR ALL USING (auth.uid() = user_id);
 
 -- Helper View for the Dashboard Stats
 -- This aggregates solved problems and completed lessons for each user

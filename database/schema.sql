@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS public.users (
     email TEXT UNIQUE NOT NULL,
     full_name TEXT,
     avatar_url TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- Problems Table (DSA Problems)
@@ -21,7 +22,8 @@ CREATE TABLE IF NOT EXISTS public.problems (
     test_cases JSONB DEFAULT '[]'::jsonb,
     tags TEXT[] DEFAULT '{}'::text[],
     created_by UUID REFERENCES public.users(id) ON DELETE SET NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
 -- Indexes for performance
@@ -79,6 +81,16 @@ CREATE TABLE IF NOT EXISTS public.er_diagrams (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- User Progress Table
+CREATE TABLE IF NOT EXISTS public.user_progress (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+    lesson_id UUID NOT NULL,
+    lesson_type TEXT CHECK (lesson_type IN ('dsa', 'dbms')) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    UNIQUE(user_id, lesson_id, lesson_type)
+);
+
 -- Row Level Security (RLS)
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.problems ENABLE ROW LEVEL SECURITY;
@@ -86,6 +98,7 @@ ALTER TABLE public.submissions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.dsa_lessons ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.dbms_lessons ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.er_diagrams ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_progress ENABLE ROW LEVEL SECURITY;
 
 -- RLS Policies
 DROP POLICY IF EXISTS "Users can view their own profile" ON public.users;
@@ -118,6 +131,12 @@ CREATE POLICY "Users can view their own diagrams" ON public.er_diagrams FOR SELE
 DROP POLICY IF EXISTS "Users can manage their own diagrams" ON public.er_diagrams;
 CREATE POLICY "Users can manage their own diagrams" ON public.er_diagrams FOR ALL USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Users can view their own progress" ON public.user_progress;
+CREATE POLICY "Users can view their own progress" ON public.user_progress FOR SELECT USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert/update their own progress" ON public.user_progress;
+CREATE POLICY "Users can insert/update their own progress" ON public.user_progress FOR ALL USING (auth.uid() = user_id);
+
 -- Create a trigger to automatically add new signups to the public.users table
 CREATE OR REPLACE FUNCTION public.handle_new_user() 
 RETURNS TRIGGER AS $$
@@ -138,3 +157,40 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
+
+-- Trigger Function to update the updated_at column
+CREATE OR REPLACE FUNCTION public.update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = timezone('utc'::text, now());
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Add updated_at triggers to relevant tables
+DROP TRIGGER IF EXISTS update_users_updated_at ON public.users;
+CREATE TRIGGER update_users_updated_at
+  BEFORE UPDATE ON public.users
+  FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_problems_updated_at ON public.problems;
+CREATE TRIGGER update_problems_updated_at
+  BEFORE UPDATE ON public.problems
+  FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_er_diagrams_updated_at ON public.er_diagrams;
+CREATE TRIGGER update_er_diagrams_updated_at
+  BEFORE UPDATE ON public.er_diagrams
+  FOR EACH ROW EXECUTE PROCEDURE public.update_updated_at_column();
+
+-- Helper View for the Dashboard Stats
+-- This aggregates solved problems and completed lessons for each user
+CREATE OR REPLACE VIEW public.user_stats AS
+SELECT 
+    u.id as user_id,
+    u.full_name,
+    u.email,
+    (SELECT COUNT(DISTINCT s.problem_id) FROM public.submissions s WHERE s.user_id = u.id AND s.status = 'accepted') as problems_solved,
+    (SELECT COUNT(*) FROM public.user_progress p WHERE p.user_id = u.id) as lessons_completed,
+    (SELECT COUNT(*) FROM public.er_diagrams d WHERE d.user_id = u.id) as diagrams_created
+FROM public.users u;
