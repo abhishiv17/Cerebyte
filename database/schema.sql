@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS public.users (
     email TEXT UNIQUE NOT NULL,
     full_name TEXT,
     avatar_url TEXT,
+    is_admin BOOLEAN DEFAULT false NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
@@ -111,7 +112,18 @@ DROP POLICY IF EXISTS "Anyone can view problems" ON public.problems;
 CREATE POLICY "Anyone can view problems" ON public.problems FOR SELECT USING (true);
 
 DROP POLICY IF EXISTS "Only admins/creators can modify problems" ON public.problems;
-CREATE POLICY "Only admins/creators can modify problems" ON public.problems FOR ALL USING (auth.uid() = created_by);
+DROP POLICY IF EXISTS "Only admins can insert problems" ON public.problems;
+DROP POLICY IF EXISTS "Only admins can update problems" ON public.problems;
+DROP POLICY IF EXISTS "Only admins can delete problems" ON public.problems;
+
+CREATE POLICY "Only admins can insert problems" ON public.problems FOR INSERT
+  WITH CHECK (EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND is_admin = true));
+
+CREATE POLICY "Only admins can update problems" ON public.problems FOR UPDATE
+  USING (EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND is_admin = true));
+
+CREATE POLICY "Only admins can delete problems" ON public.problems FOR DELETE
+  USING (EXISTS (SELECT 1 FROM public.users WHERE id = auth.uid() AND is_admin = true));
 
 DROP POLICY IF EXISTS "Users can view their own submissions" ON public.submissions;
 CREATE POLICY "Users can view their own submissions" ON public.submissions FOR SELECT USING (auth.uid() = user_id);

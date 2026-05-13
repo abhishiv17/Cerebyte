@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from app.db.client import supabase
 from app.schemas.problem import ProblemCreate, ProblemUpdate, ProblemResponse
-from app.core.security import get_current_user
+from app.core.admin import require_admin
 
 router = APIRouter()
 
@@ -27,11 +27,11 @@ async def get_problem(problem_id: str):
         raise HTTPException(status_code=404, detail="Problem not found")
     return res.data[0]
 
-@router.post("/", response_model=ProblemResponse)
-async def create_problem(problem: ProblemCreate, current_user: dict = Depends(get_current_user)):
-    """Create a new problem (admin or contributor function)."""
+@router.post("/", response_model=ProblemResponse, status_code=201)
+async def create_problem(problem: ProblemCreate, admin_user: dict = Depends(require_admin)):
+    """Create a new problem (admin only)."""
     data = problem.model_dump()
-    data["created_by"] = current_user["id"]
+    data["created_by"] = admin_user["id"]
     
     res = supabase.table("problems").insert(data).execute()
     if not res.data:
@@ -39,8 +39,8 @@ async def create_problem(problem: ProblemCreate, current_user: dict = Depends(ge
     return res.data[0]
 
 @router.put("/{problem_id}", response_model=ProblemResponse)
-async def update_problem(problem_id: str, problem: ProblemUpdate, current_user: dict = Depends(get_current_user)):
-    """Update an existing problem."""
+async def update_problem(problem_id: str, problem: ProblemUpdate, admin_user: dict = Depends(require_admin)):
+    """Update an existing problem (admin only)."""
     existing = supabase.table("problems").select("*").eq("id", problem_id).execute()
     if not existing.data:
         raise HTTPException(status_code=404, detail="Problem not found")
@@ -52,7 +52,8 @@ async def update_problem(problem_id: str, problem: ProblemUpdate, current_user: 
     return res.data[0]
 
 @router.delete("/{problem_id}")
-async def delete_problem(problem_id: str, current_user: dict = Depends(get_current_user)):
-    """Delete a problem."""
+async def delete_problem(problem_id: str, admin_user: dict = Depends(require_admin)):
+    """Delete a problem (admin only)."""
     res = supabase.table("problems").delete().eq("id", problem_id).execute()
     return {"status": "success", "message": "Problem deleted"}
+

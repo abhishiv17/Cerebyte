@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ThemeToggle } from "./ThemeToggle";
-
 export default function LandingNavbar({ user }: { user: any }) {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -42,7 +40,6 @@ export default function LandingNavbar({ user }: { user: any }) {
             </Link>
           </>
         )}
-        <ThemeToggle />
       </div>
     </nav>
   );

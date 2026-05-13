@@ -212,7 +212,7 @@ export default function IDEPage() {
                       <div className="mt-6">
                         <h3 className="font-display uppercase text-lg border-b-2 border-brand-black mb-2">Test Cases</h3>
                         {problem.test_cases.map((tc: any, i: number) => (
-                          <div key={i} className="mb-4 bg-[#f4f4ec] border-2 border-brand-black p-2 font-mono text-xs">
+                          <div key={i} className="mb-4 bg-brand-cream border-2 border-brand-black p-2 font-mono text-xs">
                             <div><strong>Input:</strong> {tc.input}</div>
                             <div><strong>Output:</strong> {tc.expected_output}</div>
                           </div>
@@ -244,13 +244,13 @@ export default function IDEPage() {
                       </div>
                       
                       {isAiLoading && (
-                        <div className="p-4 border-2 border-brand-black bg-[#f4f4ec] text-center font-mono text-xs animate-pulse">
+                        <div className="p-4 border-2 border-brand-black bg-brand-cream text-center font-mono text-xs animate-pulse">
                           🤖 Generating response from Groq...
                         </div>
                       )}
                       
                       {aiResponse && !isAiLoading && (
-                        <div className="p-4 border-2 border-brand-black bg-[#f4f4ec]">
+                        <div className="p-4 border-2 border-brand-black bg-brand-cream">
                           <div className="font-display uppercase text-lg mb-2 flex justify-between items-center border-b-2 border-brand-black/20 pb-1">
                             <span>{aiResponse.type === "hint" ? "AI Hint" : "Direct Solution"}</span>
                             <div className="flex gap-2 items-center">
@@ -292,7 +292,7 @@ export default function IDEPage() {
                 <span className="w-3 h-3 rounded-full bg-brand-green mr-2"></span>
               </div>
               <textarea
-                className="flex-1 p-4 bg-[#111111] text-[#f4f4ec] font-mono text-sm focus:outline-none resize-none"
+                className="flex-1 p-4 bg-brand-black text-brand-cream font-mono text-sm focus:outline-none resize-none"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
                 spellCheck={false}
@@ -301,17 +301,17 @@ export default function IDEPage() {
             </div>
 
             {/* Bottom Pane (Terminal / Graph Tabs) */}
-            <div className="flex-1 flex flex-col border-2 border-brand-black bg-[#f4f4ec] shadow-brutal min-h-0">
+            <div className="flex-1 flex flex-col border-2 border-brand-black bg-brand-cream shadow-brutal min-h-0">
               <div className="bg-brand-black text-white flex shrink-0">
                 <button 
                   onClick={() => setActivePane("terminal")}
-                  className={`px-4 py-2 font-mono text-xs uppercase font-bold border-r-2 border-brand-black transition-colors ${activePane === "terminal" ? "bg-[#f4f4ec] text-brand-black" : "hover:bg-brand-black/80"}`}
+                  className={`px-4 py-2 font-mono text-xs uppercase font-bold border-r-2 border-brand-black transition-colors ${activePane === "terminal" ? "bg-brand-cream text-brand-black" : "hover:bg-brand-black/80"}`}
                 >
                   terminal.out
                 </button>
                 <button 
                   onClick={() => setActivePane("graph")}
-                  className={`px-4 py-2 font-mono text-xs uppercase font-bold border-r-2 border-brand-black transition-colors ${activePane === "graph" ? "bg-[#f4f4ec] text-brand-black" : "hover:bg-brand-black/80"}`}
+                  className={`px-4 py-2 font-mono text-xs uppercase font-bold border-r-2 border-brand-black transition-colors ${activePane === "graph" ? "bg-brand-cream text-brand-black" : "hover:bg-brand-black/80"}`}
                 >
                   graph.viz
                 </button>
@@ -326,7 +326,7 @@ export default function IDEPage() {
                     {output || "> Waiting for execution..."}
                   </div>
                 ) : (
-                  <div className="h-full p-4 flex flex-col items-center justify-center bg-[#f4f4ec] overflow-auto relative">
+                  <div className="h-full p-4 flex flex-col items-center justify-center bg-brand-cream overflow-auto relative">
                     <div className="absolute top-4 left-4 font-mono text-[10px] font-bold uppercase bg-white border-2 border-brand-black px-2 py-1 shadow-brutal-sm">
                       Data Structure Visualizer
                     </div>

@@ -15,14 +15,7 @@
   --color-white: 255 255 255; /* #ffffff */
 }
 
-.dark {
-  /* Dark Theme Colors (RGB values) */
-  --color-cream: 18 18 18;    /* #121212 */
-  --color-black: 229 229 229; /* #e5e5e5 */
-  --color-green: 74 222 128;  /* #4ade80 */
-  --color-lightGreen: 31 61 35; /* #1f3d23 */
-  --color-white: 26 26 26;    /* #1a1a1a */
-}
+
 
 * {
   box-sizing: border-box;
@@ -84,6 +77,6 @@ body {
 
 /* Sticker Effect */
 .sticker {
-  @apply inline-block border-2 border-brand-black bg-[#f4f4ec] font-mono-accent text-sm font-bold uppercase px-2 py-1 shadow-brutal-sm transform -rotate-2;
+  @apply inline-block border-2 border-brand-black bg-brand-cream font-mono-accent text-sm font-bold uppercase px-2 py-1 shadow-brutal-sm transform -rotate-2;
 }
 

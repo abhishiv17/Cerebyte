@@ -1,14 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ThemeToggle } from "./ThemeToggle";
 import { signOut } from "@/app/actions";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    async function checkAdmin() {
+      try {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) return;
+
+        const res = await fetch("http://localhost:8000/api/v1/users/me", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        });
+        if (res.ok) {
+          const profile = await res.json();
+          setIsAdmin(profile.is_admin === true);
+        }
+      } catch {}
+    }
+    checkAdmin();
+  }, []);
 
   return (
     <>
@@ -22,7 +42,6 @@ export default function Sidebar() {
           <span className="text-lg font-bold font-display">☰</span>
         </button>
         <Link href="/" className="font-display text-xl uppercase tracking-wider">Cerebyte</Link>
-        <ThemeToggle />
       </div>
 
       {/* Backdrop for sliding drawer */}
@@ -51,9 +70,6 @@ export default function Sidebar() {
           >
             X
           </button>
-          <div className="hidden md:block">
-            <ThemeToggle />
-          </div>
         </div>
 
         {/* Navigation Links */}
@@ -75,6 +91,19 @@ export default function Sidebar() {
           <Link href="/ai-tutor" onClick={() => setIsOpen(false)} className={`block w-full border-2 border-brand-black p-2.5 font-display uppercase text-lg shadow-brutal-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-brutal-hover transition-all ${pathname === '/ai-tutor' ? 'bg-brand-lightGreen' : 'hover:bg-brand-cream bg-white'}`}>
             AI Code Critic
           </Link>
+
+          {/* Admin Section — only visible to admins */}
+          {isAdmin && (
+            <>
+              <div className="text-[10px] font-mono font-bold text-brand-black/50 uppercase mt-4 mb-1 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 bg-[#ef476f] rounded-full"></span>
+                Admin
+              </div>
+              <Link href="/admin/problems" onClick={() => setIsOpen(false)} className={`block w-full border-2 border-brand-black p-2.5 font-display uppercase text-lg shadow-brutal-sm hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-brutal-hover transition-all ${pathname === '/admin/problems' ? 'bg-[#ef476f] text-white' : 'hover:bg-[#ef476f]/20 bg-white'}`}>
+                Problems
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Bottom Actions */}
@@ -92,3 +121,4 @@ export default function Sidebar() {
     </>
   );
 }
+

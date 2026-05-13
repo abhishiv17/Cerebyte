@@ -48,7 +48,7 @@ export default function ProblemList({ initialProblems, initialSearch = "" }: { i
               </tr>
             ) : null}
             {filteredProblems.map((p) => (
-              <tr key={p.id} className="border-b-[1px] border-brand-black/20 hover:bg-[#f4f4ec] transition-colors group">
+              <tr key={p.id} className="border-b-[1px] border-brand-black/20 hover:bg-brand-cream transition-colors group">
                 <td className="p-3 text-center">
                   {(p.status || "Unsolved") === "Solved" && <span className="text-brand-green font-bold text-lg">✓</span>}
                   {(p.status || "Unsolved") === "Attempted" && <span className="text-[#ffd166] font-bold text-lg">↻</span>}

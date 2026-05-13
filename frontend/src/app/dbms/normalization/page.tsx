@@ -45,7 +45,7 @@ export default function NormalizationPage() {
               No lessons available. The database might be empty.
               <br/><br/>
               <span className="text-brand-black/50 block">Dummy fallback enabled below:</span>
-              <div className="mt-4 border-2 border-brand-black p-4 bg-[#f4f4ec] hover:translate-x-[2px] transition-transform cursor-pointer">
+              <div className="mt-4 border-2 border-brand-black p-4 bg-brand-cream hover:translate-x-[2px] transition-transform cursor-pointer">
                 <h3 className="font-display text-xl uppercase">1st Normal Form (1NF)</h3>
                 <p className="font-mono text-xs mt-1">Learn how to eliminate repeating groups and ensure atomicity.</p>
               </div>

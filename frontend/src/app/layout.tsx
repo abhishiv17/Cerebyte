@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, JetBrains_Mono, Anton } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
 import AppProviders from "@/components/AppProviders";
 import "./globals.css";
 
@@ -42,13 +41,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${anton.variable}`}>
-      <body className="bg-brand-cream text-brand-black antialiased font-sans selection:bg-brand-green selection:text-white transition-colors duration-300">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <AppProviders>
-            {children}
-          </AppProviders>
-        </ThemeProvider>
+    <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${anton.variable}`}>
+      <body className="bg-brand-cream text-brand-black antialiased font-sans selection:bg-brand-green selection:text-white">
+        <AppProviders>
+          {children}
+        </AppProviders>
       </body>
     </html>
   );

@@ -87,7 +87,7 @@ export default function AITutorPage() {
           </div>
 
           {/* Chat History Area */}
-          <div className="flex-1 p-5 overflow-y-auto bg-[#f4f4ec] space-y-6">
+          <div className="flex-1 p-5 overflow-y-auto bg-brand-cream space-y-6">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex gap-3 max-w-3xl ${msg.role === "user" ? "ml-auto flex-row-reverse" : ""}`}>
                 <div className={`w-8 h-8 border-2 border-brand-black flex items-center justify-center text-sm shrink-0 ${msg.role === "user" ? "bg-brand-green text-white" : "bg-[#8338ec]"}`}>
@@ -123,7 +123,7 @@ export default function AITutorPage() {
             <textarea 
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              className="flex-1 border-2 border-brand-black bg-[#f4f4ec] p-3 font-mono text-xs focus:outline-none focus:bg-white transition-colors resize-none h-20 placeholder:text-brand-black/50"
+              className="flex-1 border-2 border-brand-black bg-brand-cream p-3 font-mono text-xs focus:outline-none focus:bg-white transition-colors resize-none h-20 placeholder:text-brand-black/50"
               placeholder="Paste your code here..."
               disabled={isLoading}
             ></textarea>

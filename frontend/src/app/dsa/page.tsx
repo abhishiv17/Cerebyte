@@ -19,28 +19,6 @@ export default async function DSAHubPage({
     console.error("Failed to fetch problems:", e);
   }
 
-  if (!problems || problems.length === 0) {
-    problems = [
-      { id: "mock-1", title: "Two Sum", difficulty: "Easy", topic: "Arrays & Hashing", status: "Solved" },
-      { id: "mock-2", title: "Valid Anagram", difficulty: "Easy", topic: "Arrays & Hashing", status: "Solved" },
-      { id: "mock-3", title: "Group Anagrams", difficulty: "Medium", topic: "Arrays & Hashing", status: "Attempted" },
-      { id: "mock-4", title: "Top K Frequent Elements", difficulty: "Medium", topic: "Arrays & Hashing", status: "Unsolved" },
-      { id: "mock-5", title: "Product of Array Except Self", difficulty: "Medium", topic: "Arrays & Hashing", status: "Unsolved" },
-      { id: "mock-6", title: "Valid Palindrome", difficulty: "Easy", topic: "Two Pointers", status: "Unsolved" },
-      { id: "mock-7", title: "3Sum", difficulty: "Medium", topic: "Two Pointers", status: "Unsolved" },
-      { id: "mock-8", title: "Container With Most Water", difficulty: "Medium", topic: "Two Pointers", status: "Unsolved" },
-      { id: "mock-9", title: "Best Time to Buy and Sell Stock", difficulty: "Easy", topic: "Sliding Window", status: "Unsolved" },
-      { id: "mock-10", title: "Longest Substring Without Repeating Characters", difficulty: "Medium", topic: "Sliding Window", status: "Unsolved" },
-      { id: "mock-11", title: "Valid Parentheses", difficulty: "Easy", topic: "Stack", status: "Unsolved" },
-      { id: "mock-12", title: "Min Stack", difficulty: "Medium", topic: "Stack", status: "Unsolved" },
-      { id: "mock-13", title: "Binary Search", difficulty: "Easy", topic: "Binary Search", status: "Unsolved" },
-      { id: "mock-14", title: "Search a 2D Matrix", difficulty: "Medium", topic: "Binary Search", status: "Unsolved" },
-      { id: "mock-15", title: "Reverse Linked List", difficulty: "Easy", topic: "Linked List", status: "Unsolved" },
-      { id: "mock-16", title: "Merge Two Sorted Lists", difficulty: "Easy", topic: "Linked List", status: "Unsolved" },
-      { id: "mock-17", title: "Merge K Sorted Lists", difficulty: "Hard", topic: "Linked List", status: "Unsolved" },
-    ];
-  }
-
   const topics = [
     { name: "Arrays & Hashing", progress: "5/10", color: "bg-[#ffd166]" },
     { name: "Two Pointers", progress: "2/5", color: "bg-[#06d6a0]" },

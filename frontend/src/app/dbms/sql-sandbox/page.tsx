@@ -80,7 +80,7 @@ export default function SQLSandboxPage() {
               <span className="font-mono text-xs uppercase font-bold pl-2">query.sql</span>
             </div>
             <textarea
-              className="flex-1 p-4 bg-[#111111] text-[#f4f4ec] font-mono text-sm focus:outline-none resize-none"
+              className="flex-1 p-4 bg-brand-black text-brand-cream font-mono text-sm focus:outline-none resize-none"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               spellCheck={false}
@@ -95,7 +95,7 @@ export default function SQLSandboxPage() {
               {result && <span className="font-mono text-[10px] border-2 border-brand-black bg-white text-brand-black px-2">{result.execution_time_ms}ms</span>}
             </div>
             
-            <div className="flex-1 overflow-auto bg-[#f4f4ec]">
+            <div className="flex-1 overflow-auto bg-brand-cream">
               {error && (
                 <div className="p-4 text-red-600 font-mono text-sm whitespace-pre-wrap font-bold">
                   Error: {error}

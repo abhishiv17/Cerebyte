@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function SignupPage() {
   const [fullName, setFullName] = useState("");
@@ -99,10 +98,6 @@ export default function SignupPage() {
         className="absolute inset-0 opacity-10 pointer-events-none" 
         style={{ backgroundImage: 'radial-gradient(#111 2px, transparent 2px)', backgroundSize: '32px 32px' }}
       />
-
-      <div className="absolute top-4 right-6 z-20">
-        <ThemeToggle />
-      </div>
 
       <div className="relative w-full max-w-md animate-slide-up z-10">
         {/* Logo */}
