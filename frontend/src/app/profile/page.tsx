@@ -77,6 +77,7 @@ export default function ProfilePage() {
     try {
       const res = await fetch("http://localhost:8000/api/v1/gamification/my-stats", {
         headers: { Authorization: `Bearer ${accessToken}` },
+        cache: "no-store",
       });
       if (!res.ok) throw new Error("Failed to fetch profile");
       const data = await res.json();
@@ -114,14 +115,15 @@ export default function ProfilePage() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const payload: Record<string, unknown> = {};
-      if (form.full_name) payload.full_name = form.full_name;
-      if (form.phone_no) payload.phone_no = form.phone_no;
-      if (form.college) payload.college = form.college;
-      if (form.year_of_study) payload.year_of_study = Number(form.year_of_study);
-      if (form.usn) payload.usn = form.usn;
-      payload.interests = form.interests;
-      payload.tutor_enabled = form.tutor_enabled;
+      const payload: Record<string, unknown> = {
+        full_name: form.full_name,
+        phone_no: form.phone_no,
+        college: form.college,
+        year_of_study: form.year_of_study ? Number(form.year_of_study) : null,
+        usn: form.usn,
+        interests: form.interests,
+        tutor_enabled: form.tutor_enabled,
+      };
 
       const res = await fetch("http://localhost:8000/api/v1/gamification/sync-profile", {
         method: "PUT",

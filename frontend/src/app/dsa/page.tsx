@@ -5,8 +5,9 @@ import Link from "next/link";
 export default async function DSAHubPage({
   searchParams,
 }: {
-  searchParams: { topic?: string };
+  searchParams: Promise<{ topic?: string }>;
 }) {
+  const resolvedSearchParams = await searchParams;
   let problems = [];
   try {
     const res = await fetch("http://localhost:8000/api/v1/problems/", {
@@ -66,7 +67,7 @@ export default async function DSAHubPage({
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Main Problem List */}
           <div className="flex-[3] min-w-0">
-            <ProblemList key={searchParams.topic || "all"} initialProblems={problems} initialSearch={searchParams.topic || ""} />
+            <ProblemList key={resolvedSearchParams.topic || "all"} initialProblems={problems} initialSearch={resolvedSearchParams.topic || ""} />
           </div>
 
           {/* Right Sidebar: Stats & Challenges */}

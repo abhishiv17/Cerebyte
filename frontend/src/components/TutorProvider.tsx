@@ -39,6 +39,7 @@ export function TutorProvider({ children }: { children: ReactNode }) {
 
       const res = await fetch("http://localhost:8000/api/v1/gamification/my-stats", {
         headers: { Authorization: `Bearer ${session.access_token}` },
+        cache: "no-store",
       });
 
       if (res.ok) {
